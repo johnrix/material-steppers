@@ -8,7 +8,7 @@
                 }" ng-click="$ctrl.$stepper.goto($ctrl.stepNumber)" ng-disabled="$ctrl.$stepper.linear || $ctrl.stepNumber === $ctrl.$stepper.currentStep">
                 <div class="md-stepper-indicator-wrapper">
                     <div class="md-stepper-number" ng-hide="$ctrl.hasError">
-                    <span ng-if="!$ctrl.$stepper.isCompleted($ctrl.stepNumber)">{{ ::$ctrl.stepNumber+1 }}</span>
+                    <span ng-if="!$ctrl.$stepper.isCompleted($ctrl.stepNumber)">{{ $ctrl.stepNumber+1 }}</span>
                         <md-icon md-svg-icon="steppers-check" class="md-stepper-icon" ng-if="$ctrl.$stepper.isCompleted($ctrl.stepNumber)"></md-icon>
                     </div>
                     <div class="md-stepper-error-indicator" ng-show="$ctrl.hasError">

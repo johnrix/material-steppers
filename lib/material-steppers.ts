@@ -60,8 +60,22 @@ class StepperCtrl {
      * @param {StepCtrl} step The step to add.
      * @returns number - The step number.
      */
-    $addStep(step: StepCtrl) {
-        return this.steps.push(step) - 1;
+    $addStep(step: StepCtrl, stepNumber: number) {
+        if (typeof stepNumber != 'number' || stepNumber < 0) {
+            stepNumber = this.steps.length;
+        }
+        this.steps.splice(stepNumber, 0, step);
+        return stepNumber;
+    }
+
+    /**
+     * De-register component step from this stepper.
+     * 
+     * @param {StepCtrl} step The step number to remove.
+     * @returns nothing.
+     */
+    $removeStep(stepNumber: number) {
+        this.steps.splice(stepNumber, 1);        
     }
 
     /**
@@ -227,12 +241,16 @@ class StepCtrl {
     ) { }
 
     $postLink() {
-        this.stepNumber = this.$stepper.$addStep(this);
+        this.stepNumber = this.$stepper.$addStep(this, this.stepNumber);
     }
 
     isActive() {
         let state = this.$stepper.isActiveStep(this);
         return state;
+    }
+
+    $onDestroy() {
+        this.$stepper.$removeStep(this.stepNumber);
     }
 }
 
@@ -264,6 +282,7 @@ angular.module('mdSteppers', ['ngMaterial'])
             require: '^^mdStepper',
             transclude: true,
             scope: {
+                stepNumber: '<mdStepNumber',
                 label: '@mdLabel',
                 optional: '@?mdOptional'
             },
